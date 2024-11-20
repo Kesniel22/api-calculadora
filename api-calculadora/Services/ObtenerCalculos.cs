@@ -50,8 +50,47 @@ namespace api_calculadora.Services
             return lista;
         }
 
-        public void filterCalcs()
+        public List<Historial_Calculos> filterCalcs(string tipoOperacion)
         {
+            if(string.IsNullOrEmpty(tipoOperacion) || !"/*-+".Contains(tipoOperacion))
+            {
+                throw new ArgumentException("El tipo de operacion debe ser uno de los siguientes: '+', '-', '*', '/'");
+            }
+
+            var listaFiltrada = new List<Historial_Calculos>();
+
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = @"SELECT expresion, resultado FROM Historial_Calculos
+                        WHERE CHARINDEX(@TipoOperacion, expresion) > 0";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@TipoOperacion", tipoOperacion);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                listaFiltrada.Add(new Historial_Calculos
+                                {
+                                    expresion = reader.IsDBNull(0) ? string.Empty : reader.GetString(0),
+                                    resultado = reader.IsDBNull(1) ? 0m : reader.GetDecimal(1)
+                                });
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al filtrar los calculos de la tabla.", ex);
+                }
+            }
+            return listaFiltrada;
         }
     }
 }

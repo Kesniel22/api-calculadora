@@ -30,5 +30,29 @@ namespace api_calculadora.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [HttpGet]
+        [Route("api/filtrarCalculos")]
+        public IHttpActionResult filtrarCalculos(string operacion)
+        {
+            try
+            {
+                var resultados = obtenerCalculos.filterCalcs(operacion);
+
+                if (resultados == null || resultados.Count == 0)
+                {
+                    return NotFound(); // Respuesta HTTP 404.
+                }
+                return Ok(resultados); // Respuesta HTTP 200 con los datos.
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message); // Respuesta HTTP 400 por errores de parametros.
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex); // Respuesta HTTP 500 Error del servidor.
+            }
+        }
     }
 }
