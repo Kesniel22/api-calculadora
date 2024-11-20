@@ -50,6 +50,8 @@ namespace api_calculadora.Services
             return lista;
         }
 
-        public 
+        public void filterCalcs()
+        {
+        }
     }
 }
