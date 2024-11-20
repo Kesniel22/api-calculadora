@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Calculadora</h2>
+
+<!-- Formulario para obtener los valores -->
+<h3>Obtener Valores</h3>
+<form action="@Url.Action("ObtenerValores", "Client")" method="post">
+    <button type="submit">Obtener Valores</button>
+</form>
+
+@if (ViewBag.Resultados != null)
+{
+    <h4>Resultados:</h4>
+    <pre>@ViewBag.Resultados</pre>
+}
+else if (ViewBag.Error != null)
+{
+    <p style="color: red;">@ViewBag.Error</p>
+}
+
+<hr />
+
+<!-- Formulario para filtrar cálculos -->
+<h3>Filtrar Cálculos</h3>
+<form action="@Url.Action("FiltrarCalculos", "Client")" method="get">
+    <label for="operacion">Operación (+, -, *, /):</label>
+    <input type="text" name="operacion" id="operacion" required />
+    <button type="submit">Filtrar</button>
+</form>
+
+@if (ViewBag.Resultados != null)
+{
+    <h4>Resultados Filtrados:</h4>
+    <pre>@ViewBag.Resultados</pre>
+}
+else if (ViewBag.Error != null)
+{
+    <p style="color: red;">@ViewBag.Error</p>
+}
+

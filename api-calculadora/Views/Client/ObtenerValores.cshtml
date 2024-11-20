@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "ObtenerValores";
+}
+
+<h2>Obtener Valores</h2>
+
+<!-- Botón para obtener los valores -->
+<form action="@Url.Action("ObtenerValores", "Client")" method="post">
+    <button type="submit">Obtener Valores</button>
+</form>
+
+@if (ViewBag.Resultados != null)
+{
+    <h4>Resultados:</h4>
+    <table border="1" style="border-collapse: collapse; width: 100%; margin-top: 10px;">
+        <thead>
+            <tr>
+                <th>Operación</th>
+                <th>Resultado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var resultado in ViewBag.Resultados)
+            {
+                <tr>
+                    <td>@resultado.expresion</td>
+                    <td>@resultado.resultado</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (ViewBag.Error != null)
+{
+    <p style="color: red;">@ViewBag.Error</p>
+}

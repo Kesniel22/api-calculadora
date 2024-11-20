@@ -66,7 +66,7 @@ namespace api_calculadora.Services
                     connection.Open();
 
                     string query = @"SELECT expresion, resultado FROM Historial_Calculos
-                        WHERE CHARINDEX(@TipoOperacion, expresion) > 0";
+                        WHERE expresion LIKE '%' + @TipoOperacion  + '%'";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -77,6 +77,7 @@ namespace api_calculadora.Services
                             while (reader.Read())
                             {
                                 listaFiltrada.Add(new Historial_Calculos
+
                                 {
                                     expresion = reader.IsDBNull(0) ? string.Empty : reader.GetString(0),
                                     resultado = reader.IsDBNull(1) ? 0m : reader.GetDecimal(1)
